@@ -270,6 +270,7 @@ public class SCLAlertView: UIViewController {
             btn.action()
         } else if btn.actionType == SCLActionType.Selector {
             let ctrl = UIControl()
+            ctrl.tag = btn.tag
             ctrl.sendAction(btn.selector, to:btn.target, forEvent:nil)
         } else {
             println("Unknow action type for button")
