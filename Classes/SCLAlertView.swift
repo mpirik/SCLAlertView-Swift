@@ -239,6 +239,18 @@ public class SCLAlertView: UIViewController {
         btn.addTarget(self, action:Selector("buttonRelease:"), forControlEvents:.TouchUpInside | .TouchUpOutside | .TouchCancel | .TouchDragOutside )
         return btn
     }
+    
+    public func addButton(title:String, target:AnyObject, selector:Selector, tag:Int)->SCLButton {
+        let btn = addButton(title)
+        btn.actionType = SCLActionType.Selector
+        btn.target = target
+        btn.selector = selector
+        btn.tag = tag
+        btn.addTarget(self, action:Selector("buttonTapped:"), forControlEvents:.TouchUpInside)
+        btn.addTarget(self, action:Selector("buttonTapDown:"), forControlEvents:.TouchDown | .TouchDragEnter)
+        btn.addTarget(self, action:Selector("buttonRelease:"), forControlEvents:.TouchUpInside | .TouchUpOutside | .TouchCancel | .TouchDragOutside )
+        return btn
+    }
 
     private func addButton(title:String)->SCLButton {
         // Update view height
@@ -379,9 +391,9 @@ public class SCLAlertView: UIViewController {
         }
 
         // Done button
-        let txt = completeText != nil ? completeText! : "Done"
-        addButton(txt, target:self, selector:Selector("hideView"))
-
+        if completeText != nil {
+            addButton(completeText!, target:self, selector:Selector("hideView"))
+        }
         // Alert view colour and images
         self.circleView.backgroundColor = viewColor
         self.circleIconImageView.image  = iconImage
