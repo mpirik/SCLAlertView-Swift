@@ -352,7 +352,7 @@ public class SCLAlertView: UIViewController {
 
         case .Error:
             viewColor = UIColorFromRGB(0xC1272D)
-            iconImage = SCLAlertViewStyleKit.imageOfCross
+            iconImage = SCLAlertViewStyleKit.imageOfWarning
 
         case .Notice:
             viewColor = UIColorFromRGB(0x727375)
@@ -550,9 +550,6 @@ class SCLAlertViewStyleKit : NSObject {
     }
 
     class func drawWarning() {
-        // Color Declarations
-        let greyColor = UIColor(red: 0.236, green: 0.236, blue: 0.236, alpha: 1.000)
-
         // Warning Group
         // Warning Circle Drawing
         var warningCirclePath = UIBezierPath()
@@ -568,7 +565,7 @@ class SCLAlertViewStyleKit : NSObject {
         warningCirclePath.closePath()
         warningCirclePath.miterLimit = 4;
 
-        greyColor.setFill()
+        UIColor.whiteColor().setFill()
         warningCirclePath.fill()
 
 
@@ -588,7 +585,7 @@ class SCLAlertViewStyleKit : NSObject {
         warningShapePath.closePath()
         warningShapePath.miterLimit = 4;
 
-        greyColor.setFill()
+        UIColor.whiteColor().setFill()
         warningShapePath.fill()
     }
 
