@@ -119,16 +119,16 @@ public class SCLAlertView: UIViewController {
         contentView.addSubview(labelTitle)
         contentView.addSubview(viewText)
         // Circle View
-        circleBG.backgroundColor = UIColor.whiteColor()
-        circleBG.layer.cornerRadius = circleBG.frame.size.height / 2
-        baseView.addSubview(circleBG)
-        circleBG.addSubview(circleView)
-        circleView.addSubview(circleIconImageView)
-        var x = (kCircleHeightBackground - kCircleHeight) / 2
-        circleView.frame = CGRect(x:x, y:x, width:kCircleHeight, height:kCircleHeight)
-        circleView.layer.cornerRadius = circleView.frame.size.height / 2
-        x = (kCircleHeight - kCircleIconHeight) / 2
-        circleIconImageView.frame = CGRect(x:x, y:x, width:kCircleIconHeight, height:kCircleIconHeight)
+//        circleBG.backgroundColor = UIColor.whiteColor()
+//        circleBG.layer.cornerRadius = circleBG.frame.size.height / 2
+//        baseView.addSubview(circleBG)
+//        circleBG.addSubview(circleView)
+//        circleView.addSubview(circleIconImageView)
+//        var x = (kCircleHeightBackground - kCircleHeight) / 2
+//        circleView.frame = CGRect(x:x, y:x, width:kCircleHeight, height:kCircleHeight)
+//        circleView.layer.cornerRadius = circleView.frame.size.height / 2
+//        x = (kCircleHeight - kCircleIconHeight) / 2
+//        circleIconImageView.frame = CGRect(x:x, y:x, width:kCircleIconHeight, height:kCircleIconHeight)
         // Title
         labelTitle.numberOfLines = 1
         labelTitle.textAlignment = .Center
@@ -173,9 +173,9 @@ public class SCLAlertView: UIViewController {
         var x = (sz.width - kWindowWidth) / 2
         var y = (sz.height - kWindowHeight -  (kCircleHeight / 8)) / 2
         contentView.frame = CGRect(x:x, y:y, width:kWindowWidth, height:kWindowHeight)
-        y -= kCircleHeightBackground * 0.6
-        x = (sz.width - kCircleHeightBackground) / 2
-        circleBG.frame = CGRect(x:x, y:y, width:kCircleHeightBackground, height:kCircleHeightBackground)
+//        y -= kCircleHeightBackground * 0.6
+//        x = (sz.width - kCircleHeightBackground) / 2
+//        circleBG.frame = CGRect(x:x, y:y, width:kCircleHeightBackground, height:kCircleHeightBackground)
         // Subtitle
         y = kTitleTop + kTitleHeight
         viewText.frame = CGRect(x:12, y:y, width: kWindowWidth - 24, height:kTextHeight)
@@ -348,27 +348,27 @@ public class SCLAlertView: UIViewController {
         switch style {
         case .Success:
             viewColor = UIColorFromRGB(0x22B573)
-            iconImage = SCLAlertViewStyleKit.imageOfCheckmark
+            //iconImage = SCLAlertViewStyleKit.imageOfCheckmark
 
         case .Error:
             viewColor = UIColorFromRGB(0xC1272D)
-            iconImage = SCLAlertViewStyleKit.imageOfWarning
+            //iconImage = SCLAlertViewStyleKit.imageOfWarning
 
         case .Notice:
             viewColor = UIColorFromRGB(0x727375)
-            iconImage = SCLAlertViewStyleKit.imageOfNotice
+            //iconImage = SCLAlertViewStyleKit.imageOfNotice
 
         case .Warning:
             viewColor = UIColorFromRGB(0xFFD110)
-            iconImage = SCLAlertViewStyleKit.imageOfWarning
+            //iconImage = SCLAlertViewStyleKit.imageOfWarning
 
         case .Info:
             viewColor = UIColorFromRGB(0x2866BF)
-            iconImage = SCLAlertViewStyleKit.imageOfInfo
+            //iconImage = SCLAlertViewStyleKit.imageOfInfo
 
         case .Edit:
             viewColor = UIColorFromRGB(0xA429FF)
-            iconImage = SCLAlertViewStyleKit.imageOfEdit
+            //iconImage = SCLAlertViewStyleKit.imageOfEdit
         }
 
         // Title
@@ -396,8 +396,8 @@ public class SCLAlertView: UIViewController {
             addButton(completeText!, target:self, selector:Selector("hideView"))
         }
         // Alert view colour and images
-        self.circleView.backgroundColor = viewColor
-        self.circleIconImageView.image  = iconImage
+//        self.circleView.backgroundColor = viewColor
+//        self.circleIconImageView.image  = iconImage
         for txt in inputs {
             txt.layer.borderColor = viewColor.CGColor
         }
