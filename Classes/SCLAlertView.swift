@@ -30,7 +30,7 @@ public class SCLButton: UIButton {
         super.init(frame: CGRectZero)
     }
 
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
     }
 
@@ -97,7 +97,7 @@ public class SCLAlertView: UIViewController {
     private var inputs = [UITextField]()
     private var buttons = [SCLButton]()
 
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
 
@@ -105,7 +105,7 @@ public class SCLAlertView: UIViewController {
         super.init(nibName:nil, bundle:nil)
         // Set up main view
         view.frame = UIScreen.mainScreen().bounds
-        view.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        view.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         view.backgroundColor = UIColor(red:0, green:0, blue:0, alpha:kDefaultShadowOpacity)
         view.addSubview(baseView)
         // Base View
@@ -170,7 +170,7 @@ public class SCLAlertView: UIViewController {
         // Set background frame
         view.frame.size = sz
         // Set frames
-        var x = (sz.width - kWindowWidth) / 2
+        let x = (sz.width - kWindowWidth) / 2
         var y = (sz.height - kWindowHeight -  (kCircleHeight / 8)) / 2
         contentView.frame = CGRect(x:x, y:y, width:kWindowWidth, height:kWindowHeight)
 //        y -= kCircleHeightBackground * 0.6
@@ -194,8 +194,8 @@ public class SCLAlertView: UIViewController {
         }
     }
     
-    override public func touchesEnded(touches:Set<NSObject>, withEvent event:UIEvent) {
-        if event.touchesForView(view)?.count > 0 {
+    override public func touchesEnded(touches:Set<UITouch>, withEvent event:UIEvent?) {
+        if event!.touchesForView(view)?.count > 0 {
             view.endEditing(true)
         }
     }
@@ -224,8 +224,8 @@ public class SCLAlertView: UIViewController {
         btn.actionType = SCLActionType.Closure
         btn.action = action
         btn.addTarget(self, action:Selector("buttonTapped:"), forControlEvents:.TouchUpInside)
-        btn.addTarget(self, action:Selector("buttonTapDown:"), forControlEvents:.TouchDown | .TouchDragEnter)
-        btn.addTarget(self, action:Selector("buttonRelease:"), forControlEvents:.TouchUpInside | .TouchUpOutside | .TouchCancel | .TouchDragOutside )
+        btn.addTarget(self, action:Selector("buttonTapDown:"), forControlEvents:[.TouchDown, .TouchDragEnter])
+        btn.addTarget(self, action:Selector("buttonRelease:"), forControlEvents:[.TouchUpInside, .TouchUpOutside, .TouchCancel, .TouchDragOutside] )
         return btn
     }
 
@@ -235,8 +235,8 @@ public class SCLAlertView: UIViewController {
         btn.target = target
         btn.selector = selector
         btn.addTarget(self, action:Selector("buttonTapped:"), forControlEvents:.TouchUpInside)
-        btn.addTarget(self, action:Selector("buttonTapDown:"), forControlEvents:.TouchDown | .TouchDragEnter)
-        btn.addTarget(self, action:Selector("buttonRelease:"), forControlEvents:.TouchUpInside | .TouchUpOutside | .TouchCancel | .TouchDragOutside )
+        btn.addTarget(self, action:Selector("buttonTapDown:"), forControlEvents:[.TouchDown, .TouchDragEnter])
+        btn.addTarget(self, action:Selector("buttonRelease:"), forControlEvents:[.TouchUpInside, .TouchUpOutside, .TouchCancel, .TouchDragOutside] )
         return btn
     }
     
@@ -247,8 +247,8 @@ public class SCLAlertView: UIViewController {
         btn.selector = selector
         btn.tag = tag
         btn.addTarget(self, action:Selector("buttonTapped:"), forControlEvents:.TouchUpInside)
-        btn.addTarget(self, action:Selector("buttonTapDown:"), forControlEvents:.TouchDown | .TouchDragEnter)
-        btn.addTarget(self, action:Selector("buttonRelease:"), forControlEvents:.TouchUpInside | .TouchUpOutside | .TouchCancel | .TouchDragOutside )
+        btn.addTarget(self, action:Selector("buttonTapDown:"), forControlEvents:[.TouchDown, .TouchDragEnter])
+        btn.addTarget(self, action:Selector("buttonRelease:"), forControlEvents:[.TouchUpInside, .TouchUpOutside, .TouchCancel, .TouchDragOutside] )
         return btn
     }
 
@@ -273,7 +273,7 @@ public class SCLAlertView: UIViewController {
             ctrl.tag = btn.tag
             ctrl.sendAction(btn.selector, to:btn.target, forEvent:nil)
         } else {
-            println("Unknow action type for button")
+            print("Unknow action type for button")
         }
         hideView()
     }
@@ -335,14 +335,14 @@ public class SCLAlertView: UIViewController {
     // showTitle(view, title, subTitle, duration, style)
     public func showTitle(title: String, subTitle: String, duration: NSTimeInterval?, completeText: String?, style: SCLAlertViewStyle) -> SCLAlertViewResponder {
         view.alpha = 0
-        let rv = UIApplication.sharedApplication().keyWindow?.subviews.first as! UIView
+        let rv = UIApplication.sharedApplication().keyWindow! as UIWindow
         rv.addSubview(view)
         view.frame = rv.bounds
         baseView.frame = rv.bounds
 
         // Alert colour/icon
         viewColor = UIColor()
-        var iconImage: UIImage
+        var iconImage: UIImage?
 
         // Icon style
         switch style {
@@ -381,7 +381,7 @@ public class SCLAlertView: UIViewController {
             viewText.text = subTitle
             // Adjust text view size, if necessary
             let str = subTitle as NSString
-            let attr = [NSFontAttributeName:viewText.font]
+            let attr = [NSFontAttributeName:viewText.font!]
             let sz = CGSize(width: kWindowWidth - 24, height:90)
             let r = str.boundingRectWithSize(sz, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes:attr, context:nil)
             let ht = ceil(r.size.height)
@@ -479,7 +479,7 @@ class SCLAlertViewStyleKit : NSObject {
     // Drawing Methods
     class func drawCheckmark() {
         // Checkmark Shape Drawing
-        var checkmarkShapePath = UIBezierPath()
+        let checkmarkShapePath = UIBezierPath()
         checkmarkShapePath.moveToPoint(CGPointMake(73.25, 14.05))
         checkmarkShapePath.addCurveToPoint(CGPointMake(64.51, 13.86), controlPoint1: CGPointMake(70.98, 11.44), controlPoint2: CGPointMake(66.78, 11.26))
         checkmarkShapePath.addLineToPoint(CGPointMake(27.46, 52))
@@ -500,13 +500,13 @@ class SCLAlertViewStyleKit : NSObject {
 
     class func drawCross() {
         // Cross Shape Drawing
-        var crossShapePath = UIBezierPath()
+        let crossShapePath = UIBezierPath()
         crossShapePath.moveToPoint(CGPointMake(10, 70))
         crossShapePath.addLineToPoint(CGPointMake(70, 10))
         crossShapePath.moveToPoint(CGPointMake(10, 10))
         crossShapePath.addLineToPoint(CGPointMake(70, 70))
-        crossShapePath.lineCapStyle = kCGLineCapRound;
-        crossShapePath.lineJoinStyle = kCGLineJoinRound;
+        crossShapePath.lineCapStyle = CGLineCap.Round;
+        crossShapePath.lineJoinStyle = CGLineJoin.Round;
         UIColor.whiteColor().setStroke()
         crossShapePath.lineWidth = 14
         crossShapePath.stroke()
@@ -514,7 +514,7 @@ class SCLAlertViewStyleKit : NSObject {
 
     class func drawNotice() {
         // Notice Shape Drawing
-        var noticeShapePath = UIBezierPath()
+        let noticeShapePath = UIBezierPath()
         noticeShapePath.moveToPoint(CGPointMake(72, 48.54))
         noticeShapePath.addLineToPoint(CGPointMake(72, 39.9))
         noticeShapePath.addCurveToPoint(CGPointMake(66.38, 34.01), controlPoint1: CGPointMake(72, 36.76), controlPoint2: CGPointMake(69.48, 34.01))
@@ -552,7 +552,7 @@ class SCLAlertViewStyleKit : NSObject {
     class func drawWarning() {
         // Warning Group
         // Warning Circle Drawing
-        var warningCirclePath = UIBezierPath()
+        let warningCirclePath = UIBezierPath()
         warningCirclePath.moveToPoint(CGPointMake(40.94, 63.39))
         warningCirclePath.addCurveToPoint(CGPointMake(36.03, 65.55), controlPoint1: CGPointMake(39.06, 63.39), controlPoint2: CGPointMake(37.36, 64.18))
         warningCirclePath.addCurveToPoint(CGPointMake(34.14, 70.45), controlPoint1: CGPointMake(34.9, 66.92), controlPoint2: CGPointMake(34.14, 68.49))
@@ -570,7 +570,7 @@ class SCLAlertViewStyleKit : NSObject {
 
 
         // Warning Shape Drawing
-        var warningShapePath = UIBezierPath()
+        let warningShapePath = UIBezierPath()
         warningShapePath.moveToPoint(CGPointMake(46.23, 4.26))
         warningShapePath.addCurveToPoint(CGPointMake(40.94, 2.5), controlPoint1: CGPointMake(44.91, 3.09), controlPoint2: CGPointMake(43.02, 2.5))
         warningShapePath.addCurveToPoint(CGPointMake(34.71, 4.26), controlPoint1: CGPointMake(38.68, 2.5), controlPoint2: CGPointMake(36.03, 3.09))
@@ -594,7 +594,7 @@ class SCLAlertViewStyleKit : NSObject {
         let color0 = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000)
 
         // Info Shape Drawing
-        var infoShapePath = UIBezierPath()
+        let infoShapePath = UIBezierPath()
         infoShapePath.moveToPoint(CGPointMake(45.66, 15.96))
         infoShapePath.addCurveToPoint(CGPointMake(45.66, 5.22), controlPoint1: CGPointMake(48.78, 12.99), controlPoint2: CGPointMake(48.78, 8.19))
         infoShapePath.addCurveToPoint(CGPointMake(34.34, 5.22), controlPoint1: CGPointMake(42.53, 2.26), controlPoint2: CGPointMake(37.47, 2.26))
@@ -620,7 +620,7 @@ class SCLAlertViewStyleKit : NSObject {
         let color = UIColor(red:1.0, green:1.0, blue:1.0, alpha:1.0)
 
         // Edit shape Drawing
-        var editPathPath = UIBezierPath()
+        let editPathPath = UIBezierPath()
         editPathPath.moveToPoint(CGPointMake(71, 2.7))
         editPathPath.addCurveToPoint(CGPointMake(71.9, 15.2), controlPoint1: CGPointMake(74.7, 5.9), controlPoint2: CGPointMake(75.1, 11.6))
         editPathPath.addLineToPoint(CGPointMake(64.5, 23.7))
