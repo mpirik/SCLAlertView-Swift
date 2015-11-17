@@ -342,7 +342,7 @@ public class SCLAlertView: UIViewController {
 
         // Alert colour/icon
         viewColor = UIColor()
-        var iconImage: UIImage?
+        //var iconImage: UIImage?
 
         // Icon style
         switch style {
